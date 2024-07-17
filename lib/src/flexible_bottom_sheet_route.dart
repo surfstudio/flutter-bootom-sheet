@@ -101,6 +101,7 @@ Future<T?> showFlexibleBottomSheet<T>({
 /// even without a list.
 ///
 /// [bodyBuilder] - content's builder.
+/// [bodyPadding] padding for content's builder.
 /// [draggableScrollableController] that allow programmatically control bottom sheet.
 /// [minHeight] - min height in fractional value for bottom sheet. e.g. 0.1.
 /// [initHeight] - init height in fractional value for bottom sheet. e.g. 0.5.
@@ -132,6 +133,7 @@ Future<T?> showStickyFlexibleBottomSheet<T>({
   required BuildContext context,
   required FlexibleDraggableScrollableHeaderWidgetBuilder headerBuilder,
   required FlexibleDraggableScrollableWidgetBodyBuilder bodyBuilder,
+  EdgeInsets? bodyPadding,
   DraggableScrollableController? draggableScrollableController,
   double? minHeight,
   double? initHeight,
@@ -171,6 +173,7 @@ Future<T?> showStickyFlexibleBottomSheet<T>({
       draggableScrollableController: draggableScrollableController,
       isExpand: isExpand,
       bodyBuilder: bodyBuilder,
+      bodyPadding: bodyPadding,
       headerBuilder: headerBuilder,
       isModal: isModal,
       anchors: anchors,
@@ -193,6 +196,7 @@ class FlexibleBottomSheetRoute<T> extends PopupRoute<T> {
   final FlexibleDraggableScrollableWidgetBuilder? builder;
   final FlexibleDraggableScrollableHeaderWidgetBuilder? headerBuilder;
   final FlexibleDraggableScrollableWidgetBodyBuilder? bodyBuilder;
+  final EdgeInsets? bodyPadding;
   final DraggableScrollableController? draggableScrollableController;
   final double minHeight;
   final double initHeight;
@@ -244,6 +248,7 @@ class FlexibleBottomSheetRoute<T> extends PopupRoute<T> {
     this.builder,
     this.headerBuilder,
     this.bodyBuilder,
+    this.bodyPadding,
     this.theme,
     this.barrierLabel,
     this.anchors,
@@ -287,6 +292,7 @@ class FlexibleBottomSheetRoute<T> extends PopupRoute<T> {
               builder: builder,
               headerBuilder: headerBuilder,
               bodyBuilder: bodyBuilder,
+              bodyPadding: bodyPadding,
               isExpand: isExpand,
               animationController: _animationController,
               anchors: anchors,
@@ -307,6 +313,7 @@ class FlexibleBottomSheetRoute<T> extends PopupRoute<T> {
               builder: builder,
               headerBuilder: headerBuilder,
               bodyBuilder: bodyBuilder,
+              bodyPadding: bodyPadding,
               isExpand: isExpand,
               animationController: _animationController,
               draggableScrollableController: draggableScrollableController,
