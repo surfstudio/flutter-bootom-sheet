@@ -97,8 +97,10 @@ class _StandardBottomSheetExampleState
         );
       },
       bodyBuilder: (context, offset) {
-        return SliverChildListDelegate(
-          _children,
+        return SliverList(
+          delegate: SliverChildListDelegate(
+            _children,
+          ),
         );
       },
       anchors: [0.2, 0.5, 0.8],

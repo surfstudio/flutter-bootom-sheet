@@ -46,8 +46,8 @@ typedef FlexibleDraggableScrollableHeaderWidgetBuilder = Widget Function(
 /// and [bottomSheetOffset] for determining the position of the BottomSheet
 /// relative to the upper border of the screen.
 /// [bottomSheetOffset] - fractional value of offset.
-typedef FlexibleDraggableScrollableWidgetBodyBuilder = SliverChildDelegate
-    Function(
+typedef FlexibleDraggableScrollableWidgetBodyBuilder
+    = SliverMultiBoxAdaptorWidget Function(
   BuildContext context,
   double bottomSheetOffset,
 );
@@ -547,11 +547,9 @@ class _ContentState extends State<_Content> {
                 ),
               ),
             if (widget.bodyBuilder != null)
-              SliverList(
-                delegate: widget.bodyBuilder!(
-                  context,
-                  widget.currentExtent,
-                ),
+              widget.bodyBuilder!(
+                context,
+                widget.currentExtent,
               ),
           ],
         ),
