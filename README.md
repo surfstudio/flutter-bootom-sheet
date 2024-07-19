@@ -105,7 +105,7 @@ Widget _buildBottomSheet(
 ![Demo](https://raw.githubusercontent.com/surfstudio/flutter-bottom-sheet/main/assets/open-sticky-bottom-sheet.gif)
 
 To show sticky BottomSheet, use:  
-**You have to return SliverChildListDelegate from builder !!!**
+**You have to return SliverMultiBoxAdaptorWidget from builder (SliverList, SliverGrid or SliverFixedExtentList) !!!**
 
 ```dart
 showStickyFlexibleBottomSheet(
@@ -121,10 +121,17 @@ showStickyFlexibleBottomSheet(
     );
   },
   builder: (BuildContext context, double offset) {
-    return SliverChildListDelegate(
-      <Widget>[...],
+     return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        childCount: 5,
+        (BuildContext context, int index) {
+          return <Widget>....;
+        },
+      ),
     );
   },
+
+ 
   anchors: [0, 0.5, 1],
 );
 ```
@@ -146,7 +153,7 @@ All notable changes to this project will be documented in [this file](./CHANGELO
 
 ## Issues
 
-To report your issues,  submit them directly in the [Issues](https://github.com/surfstudio/flutter-bottom-sheet/issues) section.
+To report your issues, submit them directly in the [Issues](https://github.com/surfstudio/flutter-bottom-sheet/issues) section.
 
 ## Contribute
 

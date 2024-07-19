@@ -46,8 +46,8 @@ typedef FlexibleDraggableScrollableHeaderWidgetBuilder = Widget Function(
 /// and [bottomSheetOffset] for determining the position of the BottomSheet
 /// relative to the upper border of the screen.
 /// [bottomSheetOffset] - fractional value of offset.
-typedef FlexibleDraggableScrollableWidgetBodyBuilder = SliverChildDelegate
-    Function(
+typedef FlexibleDraggableScrollableWidgetBodyBuilder
+    = SliverMultiBoxAdaptorWidget Function(
   BuildContext context,
   double bottomSheetOffset,
 );
@@ -98,6 +98,7 @@ class FlexibleBottomSheet<T> extends StatefulWidget {
   final FlexibleDraggableScrollableWidgetBuilder? builder;
   final FlexibleDraggableScrollableHeaderWidgetBuilder? headerBuilder;
   final FlexibleDraggableScrollableWidgetBodyBuilder? bodyBuilder;
+  final EdgeInsets? bodyPadding;
   final bool isCollapsible;
   final bool isExpand;
   final DraggableScrollableController? draggableScrollableController;
@@ -122,6 +123,7 @@ class FlexibleBottomSheet<T> extends StatefulWidget {
     this.builder,
     this.headerBuilder,
     this.bodyBuilder,
+    this.bodyPadding,
     this.isCollapsible = false,
     this.isExpand = true,
     this.animationController,
@@ -152,6 +154,7 @@ class FlexibleBottomSheet<T> extends StatefulWidget {
     FlexibleDraggableScrollableWidgetBuilder? builder,
     FlexibleDraggableScrollableHeaderWidgetBuilder? headerBuilder,
     FlexibleDraggableScrollableWidgetBodyBuilder? bodyBuilder,
+    EdgeInsets? bodyPadding,
     bool isExpand = true,
     AnimationController? animationController,
     List<double>? anchors,
@@ -170,6 +173,7 @@ class FlexibleBottomSheet<T> extends StatefulWidget {
           builder: builder,
           headerBuilder: headerBuilder,
           bodyBuilder: bodyBuilder,
+          bodyPadding: bodyPadding,
           minHeight: 0,
           initHeight: initHeight,
           isCollapsible: true,
@@ -395,6 +399,7 @@ class _FlexibleBottomSheetState<T> extends State<FlexibleBottomSheet<T>> {
                   builder: widget.builder,
                   decoration: contentDecoration,
                   bodyBuilder: widget.bodyBuilder,
+                  bodyPadding: widget.bodyPadding,
                   headerBuilder: widget.headerBuilder,
                   minHeaderHeight: widget.minHeaderHeight,
                   maxHeaderHeight: widget.maxHeaderHeight,
@@ -468,6 +473,7 @@ class _Content extends StatefulWidget {
   final Decoration? decoration;
   final FlexibleDraggableScrollableHeaderWidgetBuilder? headerBuilder;
   final FlexibleDraggableScrollableWidgetBodyBuilder? bodyBuilder;
+  final EdgeInsets? bodyPadding;
   final double? minHeaderHeight;
   final double? maxHeaderHeight;
   final double currentExtent;
@@ -483,6 +489,7 @@ class _Content extends StatefulWidget {
     this.decoration,
     this.headerBuilder,
     this.bodyBuilder,
+    this.bodyPadding,
     this.minHeaderHeight,
     this.maxHeaderHeight,
     this.getContentHeight,
@@ -528,6 +535,9 @@ class _ContentState extends State<_Content> {
       );
     }
 
+    final bodyBuilder = widget.bodyBuilder;
+    final bodyPadding = widget.bodyPadding;
+
     return Material(
       type: MaterialType.transparency,
       child: DecoratedBox(
@@ -546,13 +556,19 @@ class _ContentState extends State<_Content> {
                   child: widget.headerBuilder!(context, widget.currentExtent),
                 ),
               ),
-            if (widget.bodyBuilder != null)
-              SliverList(
-                delegate: widget.bodyBuilder!(
-                  context,
-                  widget.currentExtent,
-                ),
-              ),
+            if (bodyBuilder != null)
+              bodyPadding != null
+                  ? SliverPadding(
+                      padding: bodyPadding,
+                      sliver: bodyBuilder(
+                        context,
+                        widget.currentExtent,
+                      ),
+                    )
+                  : bodyBuilder(
+                      context,
+                      widget.currentExtent,
+                    ),
           ],
         ),
       ),

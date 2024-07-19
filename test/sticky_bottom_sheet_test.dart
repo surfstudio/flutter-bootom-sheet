@@ -62,8 +62,10 @@ void main() {
         );
       },
       bodyBuilder: (context, offset) {
-        return SliverChildListDelegate(
-          _listWidgets,
+        return SliverList(
+          delegate: SliverChildListDelegate(
+            _listWidgets,
+          ),
         );
       },
     );
